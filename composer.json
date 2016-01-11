@@ -24,6 +24,7 @@
     },
     "scripts": {
         "post-install-cmd": [
+            "php bin/symfony_requirements",
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
