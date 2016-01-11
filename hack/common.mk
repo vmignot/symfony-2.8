@@ -1,7 +1,3 @@
-BASE_IMAGE_NAME = symfony-2.8
-VERSIONS = 2.8
-OPENSHIFT_NAMESPACES = 5.5
-
 SKIP_SQUASH?=0
 
 build = hack/build.sh
