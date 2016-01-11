@@ -24,8 +24,8 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "php app/check.php",
             "cat /etc/opt/rh/rh-php56/php.ini",
+            "php app/check.php",
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
