@@ -24,7 +24,7 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "cat /etc/opt/rh/rh-php56/php.ini",
+            "cat /etc/opt/rh/rh-php56/php.ini | grep timezone",
             "php app/check.php",
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
