@@ -5,7 +5,6 @@ set -e
 echo "---> Installing application source..."
 cp -Rf /tmp/src/. ./
 
-php -i | grep php.ini
 echo "date.timezone = Europe/Paris" >> /opt/rh/php55/root/etc/php.ini
 
 if [ -f composer.json ]; then
@@ -16,6 +15,7 @@ if [ -f composer.json ]; then
 
   # Install App dependencies using Composer
   fix-permissions ./
+  export SYMFONY_ENV=prod
   ./composer.phar install --no-interaction --optimize-autoloader --no-ansi --prefer-dist --no-dev --verbose
 
   if [ ! -f composer.lock ]; then
