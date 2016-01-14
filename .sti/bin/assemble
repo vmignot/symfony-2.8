@@ -3,10 +3,10 @@
 set -e
 
 echo "---> Installing application source..."
-echo 1
-echo "---> KIKOO"
-echo "---> Installing application source..."
 cp -Rf /tmp/src/. ./
+
+php -i | grep php.ini
+echo "date.timezone = Europe/Paris" >> /opt/rh/php55/root/etc/php.ini
 
 if [ -f composer.json ]; then
   echo "Found 'composer.json', installing dependencies using composer.phar... "
@@ -15,7 +15,8 @@ if [ -f composer.json ]; then
   php -r "readfile('https://getcomposer.org/installer');" | php
 
   # Install App dependencies using Composer
-  ./composer.phar install --no-interaction --no-ansi --optimize-autoloader
+  fix-permissions ./
+  ./composer.phar install --no-interaction --optimize-autoloader --no-ansi --prefer-dist --no-dev --verbose
 
   if [ ! -f composer.lock ]; then
     echo -e "\nConsider adding a 'composer.lock' file into your source repository.\n"
