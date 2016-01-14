@@ -23,6 +23,11 @@
         "symfony/phpunit-bridge": "~2.7"
     },
     "scripts": {
+        "pre-dependencies-solving": [
+          "php app/check.php",
+    	    "echo \"date.timezone = Europe/Paris\" >> /opt/rh/php55/root/etc/php.ini",
+          "php app/check.php"
+        ],
         "pre-install-cmd": [
           "php app/check.php",
     	    "echo \"date.timezone = Europe/Paris\" >> /opt/rh/php55/root/etc/php.ini",
