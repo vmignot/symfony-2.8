@@ -23,8 +23,13 @@
         "symfony/phpunit-bridge": "~2.7"
     },
     "scripts": {
+        "pre-install-cmd": [
+          "php app/check.php",
+    	    "echo \"date.timezone = Europe/Paris\" >> /opt/rh/php55/root/etc/php.ini",
+          "php app/check.php"
+        ],
         "post-install-cmd": [
-	    "echo \"date.timezone = Europe/Paris\" >> /opt/rh/php55/root/etc/php.ini",
+	         "echo \"date.timezone = Europe/Paris\" >> /opt/rh/php55/root/etc/php.ini",
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
