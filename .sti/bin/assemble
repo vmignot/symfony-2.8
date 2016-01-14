@@ -28,3 +28,14 @@ php app/check.php
 
 # Fix source directory permissions
 fix-permissions ./
+
+# Dump assetics assets
+echo "---> Dump assets"
+php bin/console assetic:dump --env=prod --no-debug
+
+echo "---> Run doctrine:migrations:migrate"
+php app/console doctrine:migrations:migrate
+
+echo "---> Fix root"
+sed -i 's%^DocumentRoot "/opt/app-root/src"%DocumentRoot "/opt/app-root/src/web"%g' /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf
+sed -i 's%^<Directory "/opt/app-root/src"%<Directory "/opt/app-root/src/web"%g' /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf
