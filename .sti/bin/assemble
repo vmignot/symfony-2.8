@@ -41,5 +41,8 @@ fi
 echo "---> Run app/check.php"
 php app/check.php
 
+## TODO: run assets generation
+## TODO: run Doctrine migration
+
 # Fix source directory permissions
 fix-permissions ./
