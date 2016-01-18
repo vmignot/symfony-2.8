@@ -29,4 +29,4 @@ envsubst < /opt/app-root/etc/php.ini.template > /opt/rh/php55/root/etc/php.ini
 envsubst < /opt/app-root/etc/php.d/opcache.ini.template > /opt/rh/php55/root/etc/php.d/opcache.ini
 
 exec httpd -D FOREGROUND
-exec httpd -f /opt/app-root/src/config/httpd.conf -D FOREGROUND
+#exec httpd -f /opt/app-root/src/config/httpd.conf -D FOREGROUND
