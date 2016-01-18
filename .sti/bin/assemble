@@ -1,13 +1,33 @@
-#!/bin/bash
+#!/bin/bash -e
+#
+# S2I assemble script for the 'symfony-2.8' image.
+# The 'assemble' script builds your application source ready to run.
+#
+# For more information refer to the documentation:
+#	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
 
 set -e
+
+case "$(php -v | grep -c "PHP 5.5")" in
+ 1) PHP_VER="55" ;;
+ *) PHP_VER="56" ;;
+esac
+
+# Restore artifacts from the previous build (if they exist).
+#
+if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+  echo "---> Restoring build artifacts"
+  mv /tmp/artifacts/. ./
+fi
 
 echo "---> Installing application source..."
 cp -Rf /tmp/src/. ./
 
 echo "---> Set date.timezone"
-echo "date.timezone = Europe/Paris" >> /opt/rh/php55/root/etc/php.ini
+echo "date.timezone = Europe/Paris" >> "/opt/rh/php${PHP_VER}/root/etc/php.ini"
 
+echo "---> Building application from source"
 if [ -f composer.json ]; then
   echo "Found 'composer.json', installing dependencies using composer.phar... "
 
@@ -25,6 +45,9 @@ fi
 
 echo "---> Run app/check.php"
 php app/check.php
+
+## TODO: run assets generation
+## TODO: run Doctrine migration
 
 # Fix source directory permissions
 fix-permissions ./
