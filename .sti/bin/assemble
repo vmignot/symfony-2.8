@@ -11,7 +11,7 @@ set -e
 
 echo "---> ls /tmp/src"
 ls -la /tmp/src
-ls -la /tmp/sripts
+ls -la /tmp/scripts
 
 # Restore artifacts from the previous build (if they exist)
 # in the incremental build scenario
