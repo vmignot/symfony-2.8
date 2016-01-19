@@ -8,16 +8,11 @@
 #	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
 #
 # tar cf - <list of files and folders>
+# This is used straight from STDIN so... No 'echo' !
 
 pushd ${HOME} >/dev/null
-
-echo "---> Check if there is dependencies to artifact"
 if [ -d ./vendor ]; then
-  echo "---> Taring vendors"
-  pwd
-  ls -la
   tar cf - vendor
-  ls -la
 fi
 
 popd >/dev/null
