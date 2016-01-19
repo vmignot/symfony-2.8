@@ -16,4 +16,4 @@ parameters:
     mailer_password:   '%mailer.password%'
 
     # A secret key that's used to generate certain security-related tokens
-    secret:            '%sf_secret%'
+    secret:            '%sfsecret%'
