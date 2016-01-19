@@ -35,7 +35,8 @@ if [ -f composer.json ]; then
   if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
     echo "---> Restoring build artifacts"
     ls -la /tmp/artifacts
-    mv /tmp/artifacts .
+    pwd
+    mv -v /tmp/artifacts/* ./
     ls -la /.
     ls -la /vendor
     ./composer.phar run-script post-install-cmd
