@@ -34,7 +34,7 @@ if [ -f composer.json ]; then
     echo "---> Restoring build artifacts"
     mv -v /tmp/artifacts/* ./
     ls -la vendor
-  end
+  fi
 
   php -r "readfile('https://getcomposer.org/installer');" | php
   export SYMFONY_ENV=prod
