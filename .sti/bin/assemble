@@ -34,7 +34,10 @@ if [ -f composer.json ]; then
   # incremental build
   if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
     echo "---> Restoring build artifacts"
+    ls -la /tmp/artifacts
     mv /tmp/artifacts .
+    ls -la /.
+    ls -la /vendor
     ./composer.phar run-script post-install-cmd
   else
     # Install App dependencies using Composer
