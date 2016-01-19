@@ -27,8 +27,6 @@ echo "---> Building application from source"
 if [ -f composer.json ]; then
   # Install Composer
   echo "Found 'composer.json', installing dependencies... "
-  php -r "readfile('https://getcomposer.org/installer');" | php
-  export SYMFONY_ENV=prod
 
   # restore any composer dependencies which will be present if this is an
   # incremental build
@@ -36,7 +34,12 @@ if [ -f composer.json ]; then
     echo "---> Restoring build artifacts"
     mv -v /tmp/artifacts/* ./
     ls -la vendor
-    ./composer.phar install --no-interaction --optimize-autoloader --no-ansi --prefer-dist --no-dev --verbose
+  end
+
+  php -r "readfile('https://getcomposer.org/installer');" | php
+  export SYMFONY_ENV=prod
+  ./composer.phar install --no-interaction --optimize-autoloader --no-ansi --prefer-dist --no-dev --verbose
+
 
   if [ ! -f composer.lock ]; then
     echo -e "\nConsider adding a 'composer.lock' file into your source repository.\n"
