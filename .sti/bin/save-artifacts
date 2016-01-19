@@ -14,7 +14,10 @@ pushd ${HOME} >/dev/null
 echo "---> Check if there is dependencies to artifact"
 if [ -d ./vendor ]; then
   echo "---> Taring vendors"
+  pwd
+  ls -la
   tar cf - vendor
+  ls -la
 fi
 
 popd >/dev/null
