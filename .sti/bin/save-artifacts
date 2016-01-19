@@ -9,10 +9,6 @@
 #
 # tar cf - <list of files and folders>
 # This is used straight from STDIN so... No 'echo' !
-
 pushd ${HOME} >/dev/null
-if [ -d ./vendor ]; then
-  tar cf - vendor
-fi
-
+tar cf - ./vendor
 popd >/dev/null
