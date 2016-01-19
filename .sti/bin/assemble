@@ -33,12 +33,11 @@ if [ -f composer.json ]; then
   if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
     echo "---> Restoring build artifacts"
     mv -v /tmp/artifacts/* ./
-    ls -la vendor
   fi
 
   php -r "readfile('https://getcomposer.org/installer');" | php
   export SYMFONY_ENV=prod
-  ./composer.phar install --no-interaction --optimize-autoloader --no-ansi --no-dev --verbose
+  ./composer.phar install --no-interaction --optimize-autoloader --no-ansi --prefer-dist --no-dev --verbose
 
 
   if [ ! -f composer.lock ]; then
