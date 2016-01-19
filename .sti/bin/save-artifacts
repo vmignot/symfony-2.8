@@ -9,6 +9,7 @@
 #
 # tar cf - <list of files and folders>
 # This is used straight from STDIN so... No 'echo' !
+ulimit -n 166384
 pushd ${HOME} >/dev/null
 tar cf - ./vendor
 popd >/dev/null
