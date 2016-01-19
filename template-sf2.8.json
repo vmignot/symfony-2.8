@@ -1,0 +1,285 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "symfony-2.8",
+        "namespace": "openshift",
+        "annotations": {
+            "description": "An example Symfony application with no database",
+            "iconClass": "icon-php",
+            "tags": "instant-app,php,symfony"
+        }
+    },
+    "objects": [
+        {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "symfony-example",
+                "annotations": {
+                    "description": "Exposes and load balances the application pods"
+                }
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "web",
+                        "port": 8080,
+                        "targetPort": 8080
+                    }
+                ],
+                "selector": {
+                    "name": "symfony-example"
+                }
+            }
+        },
+        {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "symfony-example",
+                "annotations": {
+                    "description": "Keeps track of changes in the application image"
+                }
+            }
+        },
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "symfony-example",
+                "annotations": {
+                    "description": "Defines how to build the application"
+                }
+            },
+            "spec": {
+                "source": {
+                    "type": "Git",
+                    "git": {
+                        "uri": "${SOURCE_REPOSITORY_URL}",
+                        "ref": "${SOURCE_REPOSITORY_REF}"
+                    },
+                    "contextDir": "${CONTEXT_DIR}"
+                },
+                "strategy": {
+                    "type": "Source",
+                    "sourceStrategy": {
+                        "from": {
+                            "kind": "ImageStreamTag",
+                            "namespace": "openshift",
+                            "name": "php:5.5"
+                        },
+                        "env": [
+                            {
+                                "name": "SYMFONY__DATABASE__HOST",
+                                "value": "${SYMFONY__DATABASE__HOST}"
+                            },
+                            {
+                                "name": "SYMFONY__DATABASE__NAME",
+                                "value": "${SYMFONY__DATABASE__NAME}"
+                            },
+                            {
+                                "name": "SYMFONY_ENV",
+                                "value": "${SYMFONY_ENV}"
+                            },
+                            {
+                                "name": "SYMFONY__DATABASE__USER",
+                                "value": "${SYMFONY__DATABASE__USER}"
+                            },
+                            {
+                                "name": "SYMFONY__DATABASE__PASSWORD",
+                                "value": "${SYMFONY__DATABASE__PASSWORD}"
+                            },
+                            {
+                                "name": "SYMFONY__SFSECRET",
+                                "value": "${SYMFONY__SFSECRET}"
+                            },
+                            {
+                                "name": "OPCACHE_MEMORY_CONSUMPTION",
+                                "value": "${OPCACHE_MEMORY_CONSUMPTION}"
+                            },
+                            {
+                                "name": "OPCACHE_REVALIDATE_FREQ",
+                                "value": "${OPCACHE_REVALIDATE_FREQ}"
+                            }
+                        ]
+                    }
+                },
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "symfony-example:latest"
+                    }
+                },
+                "triggers": [
+                    {
+                        "type": "ImageChange"
+                    },
+                    {
+                        "type": "GitHub",
+                        "github": {
+                            "secret": "${GITHUB_WEBHOOK_SECRET}"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "symfony-example",
+                "annotations": {
+                    "description": "Defines how to deploy the application server"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "Rolling"
+                },
+                "triggers": [
+                    {
+                        "type": "ImageChange",
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "symfony-example"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "symfony-example:latest"
+                            }
+                        }
+                    },
+                    {
+                        "type": "ConfigChange"
+                    }
+                ],
+                "replicas": 1,
+                "selector": {
+                    "name": "symfony-example"
+                },
+                "template": {
+                    "metadata": {
+                        "name": "symfony-example",
+                        "labels": {
+                            "name": "symfony-example"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "name": "symfony-example",
+                                "image": "symfony-example",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080
+                                    }
+                                ],
+                                "env": [
+                                    {
+                                        "name": "SYMFONY__DATABASE__HOST",
+                                        "value": "${SYMFONY__DATABASE__HOST}"
+                                    },
+                                    {
+                                        "name": "SYMFONY__DATABASE__NAME",
+                                        "value": "${SYMFONY__DATABASE__NAME}"
+                                    },
+                                    {
+                                        "name": "SYMFONY_ENV",
+                                        "value": "${SYMFONY_ENV}"
+                                    },
+                                    {
+                                        "name": "SYMFONY__DATABASE__USER",
+                                        "value": "${SYMFONY__DATABASE__USER}"
+                                    },
+                                    {
+                                        "name": "SYMFONY__DATABASE__PASSWORD",
+                                        "value": "${SYMFONY__DATABASE__PASSWORD}"
+                                    },
+                                    {
+                                        "name": "SYMFONY__SFSECRET",
+                                        "value": "${SYMFONY__SFSECRET}"
+                                    },
+                                    {
+                                        "name": "OPCACHE_MEMORY_CONSUMPTION",
+                                        "value": "${OPCACHE_MEMORY_CONSUMPTION}"
+                                    },
+                                    {
+                                        "name": "OPCACHE_REVALIDATE_FREQ",
+                                        "value": "${OPCACHE_REVALIDATE_FREQ}"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ],
+    "parameters": [
+        {
+            "name": "SYMFONY_ENV",
+            "description": "The Symfony env",
+            "value": "prod"
+        },
+        {
+            "name": "SOURCE_REPOSITORY_URL",
+            "description": "The URL of the repository with your application source code",
+            "value": "https://github.com/vmignot/symfony-2.8.git"
+        },
+        {
+            "name": "SOURCE_REPOSITORY_REF",
+            "description": "Set this to a branch name, tag or other ref of your repository if you are not using the default branch"
+        },
+        {
+            "name": "CONTEXT_DIR",
+            "description": "Set this to the relative path to your project if it is not in the root of your repository"
+        },
+        {
+            "name": "GITHUB_WEBHOOK_SECRET",
+            "description": "A secret string used to configure the GitHub webhook",
+            "generate": "expression",
+            "from": "[a-zA-Z0-9]{40}"
+        },
+        {
+            "name": "SYMFONY__DATABASE__NAME",
+            "description": "Database name",
+            "value": "symfony"
+        },
+        {
+            "name": "SYMFONY__DATABASE__HOST",
+            "description": "Database name",
+            "value": "127.0.0.1"
+        },
+        {
+            "name": "SYMFONY__DATABASE__USER",
+            "description": "Database user name",
+            "value": "root"
+        },
+        {
+            "name": "SYMFONY__DATABASE__PASSWORD",
+            "description": "Database user password",
+            "value": ""
+        },
+        {
+            "name": "SYMFONY__SFSECRET",
+            "description": "A secret key that's used to generate certain security-related tokens",
+            "generate": "expression",
+            "from": "[\\w]{50}"
+        },
+        {
+            "name": "OPCACHE_MEMORY_CONSUMPTION",
+            "description": "Should be calculated based on container memory limit/16",
+            "value": "16M"
+        },
+        {
+            "name": "OPCACHE_REVALIDATE_FREQ",
+            "description": "The How often to check script timestamps for updates, in seconds. 0 will result in OPcache checking for updates on every request.",
+            "value": "2"
+        }
+    ],
+    "labels": {
+        "template": "symfony-example"
+    }
+}
