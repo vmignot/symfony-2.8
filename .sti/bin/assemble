@@ -37,6 +37,7 @@ if [ -f composer.json ]; then
 
   php -r "readfile('https://getcomposer.org/installer');" | php
   export SYMFONY_ENV=prod
+  printenv | grep SYMFONY
   ./composer.phar install --no-interaction --optimize-autoloader --no-ansi --prefer-dist --no-dev --verbose
 
 
