@@ -8,11 +8,13 @@
 #	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
 #
 # tar cf - <list of files and folders>
-
+# This is used straight from STDIN so... No 'echo' !
+# https://github.com/openshift/source-to-image/issues/301
+# https://github.com/openshift/source-to-image/issues/171
 pushd ${HOME} >/dev/null
-
-if [ -d ./vendor -e -f . ./composer.lock ]; then
-  tar cf - vendor composer.lock
+if [ -d ./vendor ]; then
+  ulimit -n 166384
+  tar cf - ./vendor
 fi
 
 popd >/dev/null

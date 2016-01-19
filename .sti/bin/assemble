@@ -9,17 +9,13 @@
 
 set -e
 
+# Restore artifacts from the previous build (if they exist)
+# in the incremental build scenario
 case "$(php -v | grep -c "PHP 5.5")" in
  1) PHP_VER="55" ;;
  *) PHP_VER="56" ;;
 esac
 
-# Restore artifacts from the previous build (if they exist).
-#
-if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
-  echo "---> Restoring build artifacts"
-  mv /tmp/artifacts/. ./
-fi
 
 echo "---> Installing application source..."
 cp -Rf /tmp/src/. ./
@@ -29,14 +25,20 @@ echo "date.timezone = Europe/Paris" >> "/opt/rh/php${PHP_VER}/root/etc/php.ini"
 
 echo "---> Building application from source"
 if [ -f composer.json ]; then
-  echo "Found 'composer.json', installing dependencies using composer.phar... "
-
   # Install Composer
-  php -r "readfile('https://getcomposer.org/installer');" | php
+  echo "Found 'composer.json', installing dependencies... "
 
-  # Install App dependencies using Composer
+  # restore any composer dependencies which will be present if this is an
+  # incremental build
+  if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+    echo "---> Restoring build artifacts"
+    mv -v /tmp/artifacts/* ./
+  fi
+
+  php -r "readfile('https://getcomposer.org/installer');" | php
   export SYMFONY_ENV=prod
   ./composer.phar install --no-interaction --optimize-autoloader --no-ansi --prefer-dist --no-dev --verbose
+
 
   if [ ! -f composer.lock ]; then
     echo -e "\nConsider adding a 'composer.lock' file into your source repository.\n"
