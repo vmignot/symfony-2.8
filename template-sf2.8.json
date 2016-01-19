@@ -71,16 +71,24 @@
                         },
                         "env": [
                             {
+                                "name": "SYMFONY_ENV",
+                                "value": "${SYMFONY_ENV}"
+                            },
+                            {
+                                "name": "SYMFONY__DATABASE__DRIVER",
+                                "value": "${SYMFONY__DATABASE__DRIVER}"
+                            },
+                            {
                                 "name": "SYMFONY__DATABASE__HOST",
                                 "value": "${SYMFONY__DATABASE__HOST}"
                             },
                             {
-                                "name": "SYMFONY__DATABASE__NAME",
-                                "value": "${SYMFONY__DATABASE__NAME}"
+                                "name": "SYMFONY__DATABASE__PORT",
+                                "value": "${SYMFONY__DATABASE__PORT}"
                             },
                             {
-                                "name": "SYMFONY_ENV",
-                                "value": "${SYMFONY_ENV}"
+                                "name": "SYMFONY__DATABASE__NAME",
+                                "value": "${SYMFONY__DATABASE__NAME}"
                             },
                             {
                                 "name": "SYMFONY__DATABASE__USER",
@@ -178,16 +186,24 @@
                                 ],
                                 "env": [
                                     {
+                                        "name": "SYMFONY_ENV",
+                                        "value": "${SYMFONY_ENV}"
+                                    },
+                                    {
+                                        "name": "SYMFONY__DATABASE__DRIVER",
+                                        "value": "${SYMFONY__DATABASE__DRIVER}"
+                                    },
+                                    {
                                         "name": "SYMFONY__DATABASE__HOST",
                                         "value": "${SYMFONY__DATABASE__HOST}"
                                     },
                                     {
-                                        "name": "SYMFONY__DATABASE__NAME",
-                                        "value": "${SYMFONY__DATABASE__NAME}"
+                                        "name": "SYMFONY__DATABASE__PORT",
+                                        "value": "${SYMFONY__DATABASE__PORT}"
                                     },
                                     {
-                                        "name": "SYMFONY_ENV",
-                                        "value": "${SYMFONY_ENV}"
+                                        "name": "SYMFONY__DATABASE__NAME",
+                                        "value": "${SYMFONY__DATABASE__NAME}"
                                     },
                                     {
                                         "name": "SYMFONY__DATABASE__USER",
@@ -243,14 +259,24 @@
             "from": "[a-zA-Z0-9]{40}"
         },
         {
-            "name": "SYMFONY__DATABASE__NAME",
-            "description": "Database name",
-            "value": "symfony"
+            "name": "SYMFONY__DATABASE__DRIVER",
+            "description": "Database driver",
+            "value": "pdo_mysql"
         },
         {
             "name": "SYMFONY__DATABASE__HOST",
-            "description": "Database name",
+            "description": "Database host",
             "value": "127.0.0.1"
+        },
+        {
+            "name": "SYMFONY__DATABASE__PORT",
+            "description": "Database port",
+            "value": "~"
+        },
+        {
+            "name": "SYMFONY__DATABASE__NAME",
+            "description": "Database name",
+            "value": "symfony"
         },
         {
             "name": "SYMFONY__DATABASE__USER",
@@ -260,7 +286,7 @@
         {
             "name": "SYMFONY__DATABASE__PASSWORD",
             "description": "Database user password",
-            "value": ""
+            "value": "~"
         },
         {
             "name": "SYMFONY__SFSECRET",
