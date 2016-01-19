@@ -9,17 +9,23 @@
 
 set -e
 
+echo "---> ls /tmp"
+ls -la /tmp
+
+# Restore artifacts from the previous build (if they exist)
+# in the incremental build scenario
+function restore_saved_artifacts() {
+  if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+    echo "---> Restoring build artifacts"
+    mv /tmp/artifacts/. ./
+  fi
+}
+
 case "$(php -v | grep -c "PHP 5.5")" in
  1) PHP_VER="55" ;;
  *) PHP_VER="56" ;;
 esac
 
-# Restore artifacts from the previous build (if they exist).
-#
-if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
-  echo "---> Restoring build artifacts"
-  mv /tmp/artifacts/. ./
-fi
 
 echo "---> Installing application source..."
 cp -Rf /tmp/src/. ./
@@ -29,6 +35,9 @@ echo "date.timezone = Europe/Paris" >> "/opt/rh/php${PHP_VER}/root/etc/php.ini"
 
 echo "---> Building application from source"
 if [ -f composer.json ]; then
+  # restore any maven dependencies which will be present if this is an
+  # incremental build
+  restore_saved_artifacts
   echo "Found 'composer.json', installing dependencies using composer.phar... "
 
   # Install Composer

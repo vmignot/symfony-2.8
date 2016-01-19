@@ -11,8 +11,10 @@
 
 pushd ${HOME} >/dev/null
 
-if [ -d ./vendor -e -f . ./composer.lock ]; then
-  tar cf - vendor composer.lock
+echo "---> Check if there is dependencies to artifact"
+if [ -d ./vendor ]; then
+  echo "---> Taring vendors"
+  tar cf - vendor
 fi
 
 popd >/dev/null
