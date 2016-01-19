@@ -11,6 +11,7 @@
 !var/logs/.gitkeep
 
 # Managed by Composer
+/app/config/parameters.yml
 /app/bootstrap.php.cache
 /var/bootstrap.php.cache
 /bin/*
