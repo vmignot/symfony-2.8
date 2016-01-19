@@ -14,7 +14,9 @@ set -e
 function restore_saved_artifacts() {
   if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
     echo "---> Restoring build artifacts"
-    mv /tmp/artifacts/. ./
+    ls -la
+    ls -la /tmp/artifacts
+    mv /tmp/artifacts .
   fi
 }
 

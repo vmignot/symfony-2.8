@@ -9,7 +9,12 @@
 #
 # tar cf - <list of files and folders>
 # This is used straight from STDIN so... No 'echo' !
-ulimit -n 166384
+# https://github.com/openshift/source-to-image/issues/301
+# https://github.com/openshift/source-to-image/issues/171
 pushd ${HOME} >/dev/null
-tar cf - ./vendor
+if [ -d ./vendor ]; then
+  ulimit -n 166384
+  tar cf - ./vendor
+fi
+
 popd >/dev/null
