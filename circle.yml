@@ -1,0 +1,4 @@
+---
+dependencies:
+  override:
+    -  composer install --no-interaction --no-dev
